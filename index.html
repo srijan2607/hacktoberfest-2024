@@ -1,58 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Landing Page - List of Names with Images</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
     <header>
-        <h1>Welcome to Our Landing Page</h1>
-        <button id="dark-mode-toggle">Dark Mode</button>
+      <h1>Welcome to Our Landing Page</h1>
+      <button id="dark-mode-toggle">Toggle Dark Mode</button>
     </header>
 
-    <section class="name-list" id="name-list">
+    <main>
+      <section class="name-list" id="name-list">
         <!-- Name items will be dynamically added here -->
-    </section>
+      </section>
+    </main>
 
     <footer>
-        <p>&copy; Hacktoberfest 2024. All rights reserved.</p>
+      <p>&copy; Hacktoberfest 2024. All rights reserved.</p>
     </footer>
 
     <script src="listContribute.js"></script>
     <script>
-        const nameListSection = document.getElementById('name-list');
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
+      // Get references to DOM elements
+      const nameListSection = document.getElementById("name-list");
+      const darkModeToggle = document.getElementById("dark-mode-toggle");
 
-        // Load the contributors from the listContribute.js file
-        contributors.forEach(contributor => {
-            const nameItem = document.createElement('div');
-            nameItem.classList.add('name-item');
+      /**
+       * Creates a contributor item with an image and name.
+       * @param {Object} contributor - The contributor object containing image and name.
+       * @returns {HTMLElement} The name item element.
+       */
+      function createContributorItem(contributor) {
+        // Create a container for the contributor
+        const nameItem = document.createElement("div");
+        nameItem.classList.add("name-item");
 
-            const img = document.createElement('img');
-            img.src = contributor.image;
-            img.alt = contributor.name + " Image";
+        // Create and set up the contributor's image
+        const img = document.createElement("img");
+        img.src = contributor.image;
+        img.alt = `${contributor.name} - Contributor Image`; // Improved alt text for accessibility
 
-            const nameHeading = document.createElement('h2');
-            nameHeading.textContent = contributor.name;
+        // Create and set up the contributor's name heading
+        const nameHeading = document.createElement("h2");
+        nameHeading.textContent = contributor.name;
 
-            nameItem.appendChild(img);
-            nameItem.appendChild(nameHeading);
-            nameListSection.appendChild(nameItem);
+        // Append the image and name to the name item
+        nameItem.appendChild(img);
+        nameItem.appendChild(nameHeading);
+        return nameItem; // Return the constructed contributor item
+      }
+
+      /**
+       * Loads the list of contributors into the name list section.
+       * @param {Array} contributors - The array of contributor objects.
+       */
+      function loadContributors(contributors) {
+        contributors.forEach((contributor) => {
+          // Create and append each contributor item to the name list
+          const nameItem = createContributorItem(contributor);
+          nameListSection.appendChild(nameItem);
         });
+      }
 
-        // Toggle Dark Mode
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            localStorage.setItem('dark-mode', isDarkMode);
-        });
+      /**
+       * Toggles dark mode on the website.
+       */
+      function toggleDarkMode() {
+        document.body.classList.toggle("dark-mode"); // Toggle the dark mode class
+        const isDarkMode = document.body.classList.contains("dark-mode");
+        localStorage.setItem("dark-mode", isDarkMode); // Save preference in local storage
+      }
 
-        // Load user's theme preference from localStorage
-        if (localStorage.getItem('dark-mode') === 'true') {
-            document.body.classList.add('dark-mode');
+      /**
+       * Loads the user's theme preference from local storage.
+       */
+      function loadThemePreference() {
+        if (localStorage.getItem("dark-mode") === "true") {
+          document.body.classList.add("dark-mode"); // Apply dark mode if previously set
         }
+      }
+
+      // Event listeners
+      darkModeToggle.addEventListener("click", toggleDarkMode); // Toggle dark mode on button click
+
+      // Initialize the application
+      loadContributors(contributors); // Load contributors from the imported script
+      loadThemePreference(); // Load the user's theme preference on page load
     </script>
-</body>
+  </body>
 </html>
