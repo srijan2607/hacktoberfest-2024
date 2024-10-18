@@ -20,7 +20,7 @@ cd hacktoberfest-2024
 ```markdown
 git checkout -b my-new-branch
 ```
-
+- - Add your name and image to `listContribute.js`.
 
 ```markdown
 git add .
